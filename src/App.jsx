@@ -5,33 +5,48 @@ import TodoList from "./components/TodoList";
 function App() {
   const [todos, setTodos] = useState([]);
   const [todoValue, setTodoValue] = useState('');
+  const [isEditing, setIsEditing] = useState(false); 
 
   function persistData(newList) {
-    localStorage.setItem('todos', JSON.stringify({todos: newList}));
+    localStorage.setItem('todos', JSON.stringify({ todos: newList }));
   }
 
   function handleAddTodos(newTodo) {
-    if (!newTodo.trim()) { 
+    if (!newTodo.trim()) {
       alert("Please enter a valid todo.");
       return;
     }
-    const newtodoList = [...todos, newTodo];
-    persistData(newtodoList);
-    setTodos(newtodoList);
+
+    if (isEditing) {
+      const updatedTodos = todos.map((todo, index) =>
+        index === isEditing ? newTodo : todo
+      );
+      persistData(updatedTodos);
+      setTodos(updatedTodos);
+      setIsEditing(false); 
+    } else {
+      const newTodoList = [...todos, newTodo];
+      persistData(newTodoList);
+      setTodos(newTodoList);
+    }
+    setTodoValue(''); 
   }
 
   function handleDeleteTodos(index) {
-    const newtodoList = todos.filter((todo, todoIndex) => {
-      return todoIndex !== index;
-    });
-    persistData(newtodoList);
-    setTodos(newtodoList);
+    const newTodoList = todos.filter((todo, todoIndex) => todoIndex !== index);
+    persistData(newTodoList);
+    setTodos(newTodoList);
   }
 
   function handleEditTodos(index) {
     const valueToBeEdited = todos[index];
     setTodoValue(valueToBeEdited);
-    handleDeleteTodos(index);
+    setIsEditing(index); 
+  }
+
+  function handleCancelEditTodos() {
+    setTodoValue(''); 
+    setIsEditing(false); 
   }
 
   useEffect(() => {
@@ -44,8 +59,18 @@ function App() {
 
   return (
     <>
-      <TodoInput todoValue={todoValue} setTodoValue={setTodoValue} handleAddTodos={handleAddTodos}/>
-      <TodoList todos={todos} handleDeleteTodos={handleDeleteTodos} handleEditTodos={handleEditTodos} todoValue={todoValue}/>
+      <TodoInput
+        todoValue={todoValue}
+        setTodoValue={setTodoValue}
+        handleAddTodos={handleAddTodos}
+        handleCancelEditTodos={handleCancelEditTodos}
+      />
+      <TodoList
+        todos={todos}
+        handleDeleteTodos={handleDeleteTodos}
+        handleEditTodos={handleEditTodos}
+        todoValue={todoValue}
+      />
     </>
   );
 }
