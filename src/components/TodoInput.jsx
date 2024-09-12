@@ -11,9 +11,9 @@ export default function TodoInput(props) {
         placeholder='Enter todo...'
       />
       <button onClick={() => handleAddTodos(todoValue)}>
-        {isEditing !== false ? 'Update' : 'Add'}
+        {isEditing ? 'Update' : 'Add'}
       </button>
-      {isEditing !== false && (
+      {isEditing && (
         <button onClick={() => handleCancelEditTodos()}>
           Cancel
         </button>
