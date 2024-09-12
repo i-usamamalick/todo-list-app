@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function TodoInput(props) {
-  const { handleAddTodos, todoValue, setTodoValue, handleCancelEditTodos } = props;
+  const { handleAddTodos, todoValue, setTodoValue, handleCancelEditTodos, isEditing } = props;
 
   return (
     <header>
@@ -11,9 +11,9 @@ export default function TodoInput(props) {
         placeholder='Enter todo...'
       />
       <button onClick={() => handleAddTodos(todoValue)}>
-        {todoValue ? 'Update' : 'Add'}
+        {isEditing !== false ? 'Update' : 'Add'}
       </button>
-      {todoValue && (
+      {isEditing !== false && (
         <button onClick={() => handleCancelEditTodos()}>
           Cancel
         </button>

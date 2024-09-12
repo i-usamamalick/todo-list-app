@@ -33,15 +33,24 @@ function App() {
   }
 
   function handleDeleteTodos(index) {
-    const newTodoList = todos.filter((todo, todoIndex) => todoIndex !== index);
-    persistData(newTodoList);
-    setTodos(newTodoList);
+    if (confirm("Are you sure you want to delete?")) {
+      const newTodoList = todos.filter((todo, todoIndex) => todoIndex !== index);
+      persistData(newTodoList);
+      setTodos(newTodoList);
+    } else {
+      return
+    }
   }
 
   function handleEditTodos(index) {
-    const valueToBeEdited = todos[index];
-    setTodoValue(valueToBeEdited);
-    setIsEditing(index); 
+    if (confirm("Are you sure you want to edit?")) {
+      const valueToBeEdited = todos[index];
+      setTodoValue(valueToBeEdited);
+      setIsEditing(index);
+    } else {
+      return
+    }
+     
   }
 
   function handleCancelEditTodos() {
@@ -64,6 +73,7 @@ function App() {
         setTodoValue={setTodoValue}
         handleAddTodos={handleAddTodos}
         handleCancelEditTodos={handleCancelEditTodos}
+        isEditing={isEditing}
       />
       <TodoList
         todos={todos}
