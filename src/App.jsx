@@ -34,7 +34,11 @@ function App() {
 
   function handleDeleteTodos(index) {
     if (confirm("Are you sure you want to delete?")) {
-      const newTodoList = todos.filter((todo, todoIndex) => todoIndex !== index);
+      // const newTodoList = todos.filter((todo, todoIndex) => todoIndex !== index);
+      const newTodoList = [
+        ...todos.slice(0, index),  
+        ...todos.slice(index + 1)  
+      ];
       persistData(newTodoList);
       setTodos(newTodoList);
     } else {
